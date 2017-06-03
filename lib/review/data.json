@@ -1,0 +1,32 @@
+ {
+  "reviews": [
+    {
+      "id" : 1,
+      "text" : "A hamster made me write this."
+    },
+    {
+      "id" : 2,
+      "text" : "This product was not great"
+    },
+    {
+      "id" : 3,
+      "text" : "I love love love it!!!!!!!!!"
+    },
+    {
+      "id" : 4,
+      "text" : "Great price, only £15 pounds, would recommend."
+    },
+    {
+      "id" : 5,
+      "text" : "This was a great great purchase!"
+    },
+    {
+      "id" : 6,
+      "text" : "PHP PHP PHP Brainfuck the elderberry!!!"
+    },
+    {
+      "id" : 7,
+      "text" : "Sometimes I talk about price, but not here!"
+    }
+  ]
+}

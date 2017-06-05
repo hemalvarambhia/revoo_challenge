@@ -50,26 +50,33 @@ describe Review do
     end
 
     describe "submission status" do
-      it "has a status" do
+      it "is not accepted by default" do
         expect(review).to_not be_accepted
       end
 
-      it "can be accepted" do
-        review.vet!
-        review.accept!
-        expect(review).to be_accepted
+      context 'given it has been vetted' do
+        before(:each) { review.vet! }
+
+        it 'may be accepted' do
+          review.accept!
+
+          expect(review).to be_accepted
+        end
+
+        it 'may be rejected' do
+          review.accept!
+          review.reject!
+          
+          expect(review).to_not be_accepted
+        end
       end
 
-      it "can be rejected" do
-        review.vet!
-        review.accept!
-        review.reject!
-        expect(review).to_not be_accepted
-      end
-
-      it "is always false if not vetted" do
-        review.accept!
-        expect(review).to_not be_accepted
+      context 'when it has not been vetted' do
+        it 'is not accepted' do
+          review.accept!
+          
+          expect(review).to_not be_accepted
+        end
       end
     end
 

@@ -1,4 +1,12 @@
 source "https://rubygems.org"
 
-gem "rspec", "~>3.0"
-gem "rake"
+group :development do
+  gem 'guard'
+  gem 'guard-bundler'
+end
+
+group :test do
+  gem 'rspec'
+  gem 'guard-rspec'
+  gem 'simplecov', require: false
+end

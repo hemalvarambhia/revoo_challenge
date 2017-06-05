@@ -1,6 +1,6 @@
 # encoding: utf-8
-require_relative "../spec_helper"
-require "review"
+require 'spec_helper'
+require 'review'
 
 describe Review do
   describe ".all" do

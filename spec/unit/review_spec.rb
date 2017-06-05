@@ -1,4 +1,4 @@
-# encoding: UTF-8
+# encoding: utf-8
 require_relative "../spec_helper"
 require "review"
 
@@ -27,24 +27,22 @@ describe Review do
   end
 
   describe "a review" do
+    let(:review) { Review.new('id' => '17', 'text' => 'foo bar') }
+    
     it "has text" do
-      review = Review.new("text" => "foo bar")
       expect(review.text).to eq "foo bar"
     end
 
     it "has an id" do
-      review = Review.new("id" => "17")
       expect(review.id).to eq 17
     end
 
     describe "vetting status" do
       it "has a status" do
-        review = Review.new({})
         expect(review).to_not be_vetted
       end
 
       it "can be set" do
-        review = Review.new({})
         review.vet!
         expect(review).to be_vetted
       end
@@ -52,19 +50,16 @@ describe Review do
 
     describe "submission status" do
       it "has a status" do
-        review = Review.new({})
         expect(review).to_not be_accepted
       end
 
       it "can be accepted" do
-        review = Review.new({})
         review.vet!
         review.accept!
         expect(review).to be_accepted
       end
 
       it "can be rejected" do
-        review = Review.new({})
         review.vet!
         review.accept!
         review.reject!
@@ -72,7 +67,6 @@ describe Review do
       end
 
       it "is always false if not vetted" do
-        review = Review.new({})
         review.accept!
         expect(review).to_not be_accepted
       end
@@ -80,16 +74,13 @@ describe Review do
 
     describe "rejection reason" do
       it "is nil by default" do
-        review = Review.new({})
         expect(review.rejection_reason).to be_nil
       end
 
       it "can be set" do
-        review = Review.new({})
         review.rejection_reason = "foobah"
         expect(review.rejection_reason).to eq "foobah"
       end
     end
   end
-
 end

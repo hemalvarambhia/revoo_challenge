@@ -37,7 +37,7 @@ describe Review do
       expect(review.id).to eq 17
     end
 
-    describe '#vet!' do
+    describe 'vetting a review' do
       it 'is not vetted by default' do
         expect(review).to_not be_vetted
       end

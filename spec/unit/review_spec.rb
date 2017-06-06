@@ -86,8 +86,8 @@ describe Review do
       end
 
       it "can be set" do
-        review.rejection_reason = "foobah"
-        expect(review.rejection_reason).to eq "foobah"
+        expect { review.rejection_reason = 'foobah' }
+          .to change { review.rejection_reason }.to "foobah"
       end
     end
   end

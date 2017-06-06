@@ -2,13 +2,17 @@ require "spec_helper"
 require "review"
 
 describe "I want reviews to be vetted" do
+  class Vetting
+    def self.vet reviews
+      reviews.each &:vet!
+    end
+  end
+  
   let(:reviews)  { Review.all }
 
   it "vets all reviews given" do
-    pending "Please make this test pass"
-
     Vetting.vet(reviews)
-    expect(reviews.all?(&:vetted?)).to be_truthy
+    expect(reviews).to all be_vetted
   end
 
   it "sets the status on the correct reviews" do

@@ -6,7 +6,11 @@ describe "I want reviews to be vetted" do
     def self.vet reviews
       reviews.each do |review|
         review.vet!
-        review.rejection_reason = "Sorry you can't use bad language"
+        review.accept!
+        if review.text.include? 'hamster'
+          review.reject!
+          review.rejection_reason = "Sorry you can't use bad language"
+        end
       end
     end
   end
@@ -30,12 +34,16 @@ describe "I want reviews to be vetted" do
     end
   end
 
+  context 'acceptable reviews' do
+    it 'accepts reviews without bad language' do
+      Vetting.vet(reviews)
+
+      expect(review(2)).to be_accepted
+    end
+  end
+
   it "sets the status on the correct reviews" do
     pending "Oh and this one too"
-
-    Vetting.vet(reviews)
-
-    expect(review(2)).to be_accepted
 
     expect(review(3)).to_not be_accepted
     expect(review(3).rejection_reason).to eq "Sorry you can't have repetition"

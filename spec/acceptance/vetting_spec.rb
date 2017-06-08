@@ -4,7 +4,10 @@ require "review"
 describe "I want reviews to be vetted" do
   class Vetting
     def self.vet reviews
-      reviews.each &:vet!
+      reviews.each do |review|
+        review.vet!
+        review.rejection_reason = "Sorry you can't use bad language"
+      end
     end
   end
   
@@ -15,13 +18,22 @@ describe "I want reviews to be vetted" do
     expect(reviews).to all be_vetted
   end
 
+  context 'vetting bad language' do
+    before :each do
+      Vetting.vet(reviews)
+    end
+    
+    it "rejects review containing the word 'hamster'" do
+      expect(review(1)).to_not be_accepted
+      expect(review(1).rejection_reason)
+        .to eq "Sorry you can't use bad language"
+    end
+  end
+
   it "sets the status on the correct reviews" do
     pending "Oh and this one too"
 
     Vetting.vet(reviews)
-
-    expect(review(1)).to_not be_accepted
-    expect(review(1).rejection_reason).to eq "Sorry you can't use bad language"
 
     expect(review(2)).to be_accepted
 

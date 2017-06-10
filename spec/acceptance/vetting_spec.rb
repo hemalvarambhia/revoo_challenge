@@ -7,17 +7,19 @@ describe "I want reviews to be vetted" do
       reviews.each do |review|
         review.vet!
         review.accept!
-        offensive_words = %w{hamster PHP Brainfuck elderberry}
-        offensive_words.each do |offensive_word|
-          if review.text.include? offensive_word
-            uses_bad_language(review)
-          end
-        end
+        uses_bad_language(review) if contains_bad_language?(review)
       end
     end
 
     private
 
+    def self.contains_bad_language?(review)
+      offensive_words = %w{hamster PHP Brainfuck elderberry}
+      offensive_words.any? do |offensive_word|
+        review.contains? offensive_word
+      end
+    end
+    
     def self.uses_bad_language(review)
       review.reject!
       review.rejection_reason = "Sorry you can't use bad language"

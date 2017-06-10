@@ -37,6 +37,10 @@ class Review
     self.accepted = false
   end
 
+  def contains? word
+    text.include? word
+  end
+
   module Data
     def self.read
       JSON.parse(File.read(File.expand_path("./review/data.json", File.dirname(__FILE__))))["reviews"]

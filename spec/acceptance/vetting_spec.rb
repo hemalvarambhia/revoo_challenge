@@ -7,11 +7,20 @@ describe "I want reviews to be vetted" do
       reviews.each do |review|
         review.vet!
         review.accept!
-        if review.text.include? 'hamster'
-          review.reject!
-          review.rejection_reason = "Sorry you can't use bad language"
+        offensive_words = %w{hamster PHP Brainfuck elderberry}
+        offensive_words.each do |offensive_word|
+          if review.text.include? offensive_word
+            uses_bad_language(review)
+          end
         end
       end
+    end
+
+    private
+
+    def self.uses_bad_language(review)
+      review.reject!
+      review.rejection_reason = "Sorry you can't use bad language"
     end
   end
   
@@ -30,6 +39,12 @@ describe "I want reviews to be vetted" do
     it "rejects review containing the word 'hamster'" do
       expect(review(1)).to_not be_accepted
       expect(review(1).rejection_reason)
+        .to eq "Sorry you can't use bad language"
+    end
+
+    it "rejects reviews containing the words 'PHP', 'Brainfuck' and 'elderberry'"do
+      expect(review(6)).to_not be_accepted
+      expect(review(6).rejection_reason)
         .to eq "Sorry you can't use bad language"
     end
   end
@@ -52,9 +67,6 @@ describe "I want reviews to be vetted" do
     expect(review(4).rejection_reason).to eq "Sorry you can't mention the price"
 
     expect(review(5)).to be_accepted
-
-    expect(review(6)).to_not be_accepted
-    expect(review(6).rejection_reason).to eq "Sorry you can't use bad language"
 
     expect(review(7)).to be_accepted
   end

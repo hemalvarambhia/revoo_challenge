@@ -23,10 +23,10 @@ describe "I want reviews to be vetted" do
       review.rejection_reason = "Sorry you can't have repetition"
     end
 
-    def self.word_count review
-      review.text.split(' ').uniq.inject({}) do |word_count, word|
-        word_count
-          .merge(word => review.text.split(' ').count { |w| w == word })
+    def self.word_count(review)
+      words = review.words
+      words.uniq.inject({}) do |word_count, word|
+        word_count.merge(word => words.count { |w| w == word })
       end
     end
 

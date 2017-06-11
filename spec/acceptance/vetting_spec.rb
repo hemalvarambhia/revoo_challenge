@@ -1,3 +1,4 @@
+# coding: utf-8
 require "spec_helper"
 require "review"
 
@@ -8,11 +9,21 @@ describe "I want reviews to be vetted" do
         review.vet!
         review.accept!
         reject_for_repetition(review) if repetition_contained_in?(review)
+        reject_for_price(review) if price_contained_in?(review)
         reject_for_bad_language(review) if bad_language_contained_in?(review)
       end
     end
 
     private
+
+    def self.price_contained_in?(review)
+      review.text.scan(/£\d+/).any?
+    end
+
+    def self.reject_for_price(review)
+      review.reject!
+      review.rejection_reason = "Sorry you can't mention the price"
+    end
 
     def self.repetition_contained_in? review
       word_count(review).any? { |_, count| count == 3 }
@@ -85,9 +96,8 @@ describe "I want reviews to be vetted" do
     expect(review(3).rejection_reason).to eq "Sorry you can't have repetition"
   end
   
-  it "sets the status on the correct reviews" do
-    pending "Oh and this one too"
-
+  it 'rejects review that quote prices' do
+    Vetting.vet(reviews)
     expect(review(4)).to_not be_accepted
     expect(review(4).rejection_reason).to eq "Sorry you can't mention the price"
   end

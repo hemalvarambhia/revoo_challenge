@@ -7,11 +7,28 @@ describe "I want reviews to be vetted" do
       reviews.each do |review|
         review.vet!
         review.accept!
+        uses_repetition(review) if contains_repetition?(review)
         uses_bad_language(review) if contains_bad_language?(review)
       end
     end
 
     private
+
+    def self.contains_repetition? review
+      word_count(review).any? { |_, count| count == 3 }
+    end
+
+    def self.uses_repetition(review)
+      review.reject!
+      review.rejection_reason = "Sorry you can't have repetition"
+    end
+
+    def self.word_count review
+      review.text.split(' ').uniq.inject({}) do |word_count, word|
+        word_count
+          .merge(word => review.text.split(' ').count { |w| w == word })
+      end
+    end
 
     def self.contains_bad_language?(review)
       offensive_words = %w{hamster PHP Brainfuck elderberry}
@@ -59,6 +76,13 @@ describe "I want reviews to be vetted" do
       expect(review(5)).to be_accepted
       expect(review(7)).to be_accepted
     end
+  end
+
+  it 'rejects reviews with repetition' do
+    Vetting.vet(reviews)
+    
+    expect(review(3)).to_not be_accepted
+    expect(review(3).rejection_reason).to eq "Sorry you can't have repetition"
   end
   
   it "sets the status on the correct reviews" do

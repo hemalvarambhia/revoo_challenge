@@ -88,9 +88,6 @@ describe "I want reviews to be vetted" do
   it "sets the status on the correct reviews" do
     pending "Oh and this one too"
 
-    expect(review(3)).to_not be_accepted
-    expect(review(3).rejection_reason).to eq "Sorry you can't have repetition"
-
     expect(review(4)).to_not be_accepted
     expect(review(4).rejection_reason).to eq "Sorry you can't mention the price"
   end

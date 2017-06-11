@@ -52,17 +52,13 @@ describe "I want reviews to be vetted" do
   end
   
   let(:reviews)  { Review.all }
+  before(:each) { Vetting.vet(reviews) }
 
   it "vets all reviews given" do
-    Vetting.vet(reviews)
     expect(reviews).to all be_vetted
   end
 
   context 'vetting bad language' do
-    before :each do
-      Vetting.vet(reviews)
-    end
-    
     it "rejects review containing the word 'hamster'" do
       expect(review(1)).to_not be_accepted
       expect(review(1).rejection_reason)
@@ -78,8 +74,6 @@ describe "I want reviews to be vetted" do
 
   context 'acceptable reviews' do
     it 'accepts reviews without bad language' do
-      Vetting.vet(reviews)
-
       expect(review(2)).to be_accepted
       expect(review(5)).to be_accepted
       expect(review(7)).to be_accepted
@@ -87,14 +81,11 @@ describe "I want reviews to be vetted" do
   end
 
   it 'rejects reviews with repetition' do
-    Vetting.vet(reviews)
-    
     expect(review(3)).to_not be_accepted
     expect(review(3).rejection_reason).to eq "Sorry you can't have repetition"
   end
   
   it 'rejects review that quote prices' do
-    Vetting.vet(reviews)
     expect(review(4)).to_not be_accepted
     expect(review(4).rejection_reason).to eq "Sorry you can't mention the price"
   end

@@ -21,8 +21,7 @@ describe "I want reviews to be vetted" do
     end
 
     def self.reject_for_price(review)
-      review.reject!
-      review.rejection_reason = "Sorry you can't mention the price"
+      review.reject_for("Sorry you can't mention the price")
     end
 
     def self.repetition_contained_in? review
@@ -30,8 +29,7 @@ describe "I want reviews to be vetted" do
     end
 
     def self.reject_for_repetition(review)
-      review.reject!
-      review.rejection_reason = "Sorry you can't have repetition"
+      review.reject_for("Sorry you can't have repetition")
     end
 
     def self.word_count(review)
@@ -49,8 +47,7 @@ describe "I want reviews to be vetted" do
     end
     
     def self.reject_for_bad_language(review)
-      review.reject!
-      review.rejection_reason = "Sorry you can't use bad language"
+      review.reject_for("Sorry you can't use bad language")
     end
   end
   

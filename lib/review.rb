@@ -45,6 +45,11 @@ class Review
     text.split
   end
 
+  def reject_for(reason)
+    reject!
+    self.rejection_reason = reason
+  end
+
   module Data
     def self.read
       JSON.parse(File.read(File.expand_path("./review/data.json", File.dirname(__FILE__))))["reviews"]

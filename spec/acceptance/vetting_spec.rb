@@ -7,18 +7,18 @@ describe "I want reviews to be vetted" do
       reviews.each do |review|
         review.vet!
         review.accept!
-        uses_repetition(review) if contains_repetition?(review)
-        uses_bad_language(review) if contains_bad_language?(review)
+        reject_for_repetition(review) if repetition_contained_in?(review)
+        reject_for_bad_language(review) if bad_language_contained_in?(review)
       end
     end
 
     private
 
-    def self.contains_repetition? review
+    def self.repetition_contained_in? review
       word_count(review).any? { |_, count| count == 3 }
     end
 
-    def self.uses_repetition(review)
+    def self.reject_for_repetition(review)
       review.reject!
       review.rejection_reason = "Sorry you can't have repetition"
     end
@@ -30,14 +30,14 @@ describe "I want reviews to be vetted" do
       end
     end
 
-    def self.contains_bad_language?(review)
+    def self.bad_language_contained_in?(review)
       offensive_words = %w{hamster PHP Brainfuck elderberry}
       offensive_words.any? do |offensive_word|
         review.contains? offensive_word
       end
     end
     
-    def self.uses_bad_language(review)
+    def self.reject_for_bad_language(review)
       review.reject!
       review.rejection_reason = "Sorry you can't use bad language"
     end

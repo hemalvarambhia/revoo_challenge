@@ -56,9 +56,11 @@ describe "I want reviews to be vetted" do
       Vetting.vet(reviews)
 
       expect(review(2)).to be_accepted
+      expect(review(5)).to be_accepted
+      expect(review(7)).to be_accepted
     end
   end
-
+  
   it "sets the status on the correct reviews" do
     pending "Oh and this one too"
 
@@ -67,10 +69,6 @@ describe "I want reviews to be vetted" do
 
     expect(review(4)).to_not be_accepted
     expect(review(4).rejection_reason).to eq "Sorry you can't mention the price"
-
-    expect(review(5)).to be_accepted
-
-    expect(review(7)).to be_accepted
   end
 
   def review(id)

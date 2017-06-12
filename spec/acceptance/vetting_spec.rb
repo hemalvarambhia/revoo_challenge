@@ -8,18 +8,18 @@ describe "I want reviews to be vetted" do
       reviews.each do |review|
         review.vet!
         review.accept!
-        reason = detect_repetition_in(review)
-        review.reject_for(reason) if reason
-        reason = detect_price_in(review)
-        review.reject_for(reason) if reason
-        reason = detect_bad_language_in(review)
-        review.reject_for(reason) if reason
+        violation = repetition_violation(review)
+        review.reject_for(violation) if violation
+        violation = price_violation(review)
+        review.reject_for(violation) if violation
+        violation = bad_language_violation(review)
+        review.reject_for(violation) if violation
       end
     end
 
     private
 
-    def self.detect_price_in(review)
+    def self.price_violation(review)
       if price_contained_in?(review)
         return "Sorry you can't mention the price"
       end
@@ -43,7 +43,7 @@ describe "I want reviews to be vetted" do
       review.reject_for("Sorry you can't have repetition")
     end
 
-    def self.detect_repetition_in(review)
+    def self.repetition_violation(review)
       if repetition_contained_in?(review)
         return "Sorry you can't have repetition"
       end
@@ -69,7 +69,7 @@ describe "I want reviews to be vetted" do
       review.reject_for("Sorry you can't use bad language")
     end
 
-    def self.detect_bad_language_in(review)
+    def self.bad_language_violation(review)
       if bad_language_contained_in?(review)
         return "Sorry you can't use bad language"
       end

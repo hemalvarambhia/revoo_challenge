@@ -8,7 +8,7 @@ describe "I want reviews to be vetted" do
       reviews.each do |review|
         review.vet!
         violation =
-          [ BadLanguageRule.new, PricesRule.new, RepetitionRule.new ]
+          [ OffensiveWordsRule.new, PricesRule.new, RepetitionRule.new ]
           .map { |rule| rule.violation(review) }
           .detect { |violation| violation }
 
@@ -67,7 +67,7 @@ describe "I want reviews to be vetted" do
       end
     end
 
-    class BadLanguageRule
+    class OffensiveWordsRule
       include Rule
 
       attr_reader :offensive_words

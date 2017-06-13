@@ -22,30 +22,32 @@ describe "I want reviews to be vetted" do
 
     private
 
-    class PricesRule
+    module Rule
       def violation(review)
         if contained_in?(review)
-          return "Sorry you can't mention the price"
+          return message
         end
 
         nil
       end
+    end
+
+    class PricesRule
+      include Rule
 
       private
 
       def contained_in?(review)
         review.text.scan(/£\d+/).any?
       end
+
+      def message
+        "Sorry you can't mention the price"
+      end
     end
 
     class RepetitionRule
-      def violation(review)
-        if contained_in?(review)
-          return "Sorry you can't have repetition"
-        end
-
-        nil
-      end
+      include Rule
 
       private
 
@@ -59,27 +61,31 @@ describe "I want reviews to be vetted" do
           word_count.merge(word => words.count { |w| w == word })
         end
       end
+
+      def message
+        "Sorry you can't have repetition"
+      end
     end
 
     class BadLanguageRule
+      include Rule
+
       attr_reader :offensive_words
       
       def initialize(offensive_words = %w{hamster PHP Brainfuck elderberry})
         @offensive_words = offensive_words
       end
       
-      def violation(review)
-        if contained_in?(review)
-          return "Sorry you can't use bad language"
-        end
-
-        nil
-      end
+      private
 
       def contained_in?(review)
         offensive_words.any? do |offensive_word|
           review.contains? offensive_word
         end
+      end
+
+      def message
+        "Sorry you can't use bad language"
       end
     end
   end

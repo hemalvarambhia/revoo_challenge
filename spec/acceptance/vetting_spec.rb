@@ -24,7 +24,7 @@ describe "I want reviews to be vetted" do
 
     module Rule
       def violation(review)
-        if contained_in?(review)
+        if violated_in?(review)
           return message
         end
 
@@ -37,7 +37,7 @@ describe "I want reviews to be vetted" do
 
       private
 
-      def contained_in?(review)
+      def violated_in?(review)
         review.text.scan(/£\d+/).any?
       end
 
@@ -51,7 +51,7 @@ describe "I want reviews to be vetted" do
 
       private
 
-      def contained_in? review
+      def violated_in? review
         word_count(review).any? { |_, count| count == 3 }
       end
 
@@ -78,7 +78,7 @@ describe "I want reviews to be vetted" do
       
       private
 
-      def contained_in?(review)
+      def violated_in?(review)
         offensive_words.any? do |offensive_word|
           review.contains? offensive_word
         end

@@ -7,13 +7,16 @@ describe "I want reviews to be vetted" do
     def self.vet reviews
       reviews.each do |review|
         review.vet!
-        review.accept!
-        violation = RepetitionRule.new.violation(review)
-        review.reject_for(violation) if violation
-        violation = PricesRule.new.violation(review)
-        review.reject_for(violation) if violation
-        violation = BadLanguageRule.new.violation(review)
-        review.reject_for(violation) if violation
+        violation =
+          [ BadLanguageRule.new, PricesRule.new, RepetitionRule.new ]
+          .map { |rule| rule.violation(review) }
+          .detect { |violation| violation }
+
+        if violation
+          review.reject_for(violation)
+        else
+          review.accept!
+        end
       end
     end
 

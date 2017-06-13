@@ -8,56 +8,78 @@ describe "I want reviews to be vetted" do
       reviews.each do |review|
         review.vet!
         review.accept!
-        violation = repetition_violation(review)
+        violation = RepetitionRule.new.violation(review)
         review.reject_for(violation) if violation
-        violation = price_violation(review)
+        violation = PricesRule.new.violation(review)
         review.reject_for(violation) if violation
-        violation = bad_language_violation(review)
+        violation = BadLanguageRule.new.violation(review)
         review.reject_for(violation) if violation
       end
     end
 
     private
 
-    def self.price_violation(review)
-      if price_contained_in?(review)
-        return "Sorry you can't mention the price"
+    class PricesRule
+      def violation(review)
+        if price_contained_in?(review)
+          return "Sorry you can't mention the price"
+        end
+
+        nil
       end
 
-      nil
-    end
-
-    def self.price_contained_in?(review)
-      review.text.scan(/£\d+/).any?
-    end
-
-    def self.reject_for_price(review)
-      review.reject_for("Sorry you can't mention the price")
-    end
-
-    def self.repetition_contained_in? review
-      word_count(review).any? { |_, count| count == 3 }
-    end
-
-    def self.reject_for_repetition(review)
-      review.reject_for("Sorry you can't have repetition")
-    end
-
-    def self.repetition_violation(review)
-      if repetition_contained_in?(review)
-        return "Sorry you can't have repetition"
-      end
-
-      nil
-    end
-
-    def self.word_count(review)
-      words = review.words
-      words.uniq.inject({}) do |word_count, word|
-        word_count.merge(word => words.count { |w| w == word })
+      private
+      
+      def price_contained_in?(review)
+        review.text.scan(/£\d+/).any?
       end
     end
 
+    class RepetitionRule
+      def violation(review)
+        if repetition_contained_in?(review)
+          return "Sorry you can't have repetition"
+        end
+
+        nil
+      end
+
+      private
+
+      def repetition_contained_in? review
+        word_count(review).any? { |_, count| count == 3 }
+      end
+
+      def word_count(review)
+        words = review.words
+        words.uniq.inject({}) do |word_count, word|
+          word_count.merge(word => words.count { |w| w == word })
+        end
+      end
+    end
+
+    class BadLanguageRule
+      attr_reader :offensive_words
+      
+      def initialize(offensive_words = %w{hamster PHP Brainfuck elderberry})
+        @offensive_words = offensive_words
+      end
+      
+      def bad_language_contained_in?(review)
+        offensive_words.any? do |offensive_word|
+          review.contains? offensive_word
+        end
+      end
+
+      def violation(review)
+        if bad_language_contained_in?(review)
+          return "Sorry you can't use bad language"
+        end
+
+        nil
+      end
+    end
+    
     def self.bad_language_contained_in?(review)
       offensive_words = %w{hamster PHP Brainfuck elderberry}
       offensive_words.any? do |offensive_word|

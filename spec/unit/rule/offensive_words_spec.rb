@@ -2,15 +2,15 @@ require 'spec_helper'
 require 'rule/offensive_words'
 
 describe OffensiveWords do
-  it "rejects reviews with the word 'Elderberry'"
+  describe 'a review with no offensive words' do
+    it 'is not a violation'
+  end
+  
+  describe 'a review with one offensive word' do
+    it 'is a violation'
+  end
 
-  it "rejects reviews with the word 'elderberry"
-
-  it "rejects reviews with the word 'PHP'"
-
-  it "rejects reviews with the word 'php'"
-
-  it "rejects reviews with the word 'Brainfuck'"
-
-  it "rejects reviews with the word 'brainfuck'"
+  describe 'a review with multiple offensive words' do
+    it 'is a violation'
+  end
 end

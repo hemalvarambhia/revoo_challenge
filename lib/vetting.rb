@@ -1,4 +1,4 @@
-require 'rule/bad_language'
+require 'rule/offensive_words'
 require 'rule/prices'
 require 'rule/repetition'
 class Vetting

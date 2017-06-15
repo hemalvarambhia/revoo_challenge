@@ -1,4 +1,5 @@
 # coding: utf-8
+require 'rule/rule'
 class Prices
   include Rule
 

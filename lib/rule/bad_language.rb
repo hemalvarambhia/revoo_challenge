@@ -1,3 +1,4 @@
+require 'rule/rule'
 class OffensiveWords
   include Rule
 

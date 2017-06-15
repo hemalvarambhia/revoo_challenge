@@ -1,4 +1,3 @@
-require 'rule/rule'
 require 'rule/bad_language'
 require 'rule/prices'
 require 'rule/repetition'

@@ -1,5 +1,9 @@
 # coding: utf-8
 require "spec_helper"
+require 'rule/rule'
+require 'rule/prices'
+require 'rule/repetition'
+require 'rule/bad_language'
 require "review"
 
 describe "I want reviews to be vetted" do
@@ -17,75 +21,6 @@ describe "I want reviews to be vetted" do
         else
           review.accept!
         end
-      end
-    end
-
-    private
-
-    module Rule
-      def violation(review)
-        if violated_in?(review)
-          return message
-        end
-
-        nil
-      end
-    end
-
-    class Prices
-      include Rule
-
-      private
-
-      def violated_in?(review)
-        review.text.scan(/£\d+/).any?
-      end
-
-      def message
-        "Sorry you can't mention the price"
-      end
-    end
-
-    class Repetition
-      include Rule
-
-      private
-
-      def violated_in? review
-        word_count(review).any? { |_, count| count == 3 }
-      end
-
-      def word_count(review)
-        words = review.words
-        words.uniq.inject({}) do |word_count, word|
-          word_count.merge(word => words.count { |w| w == word })
-        end
-      end
-
-      def message
-        "Sorry you can't have repetition"
-      end
-    end
-
-    class OffensiveWords
-      include Rule
-
-      attr_reader :offensive_words
-      
-      def initialize(offensive_words = %w{hamster PHP Brainfuck elderberry})
-        @offensive_words = offensive_words
-      end
-      
-      private
-
-      def violated_in?(review)
-        offensive_words.any? do |offensive_word|
-          review.contains? offensive_word
-        end
-      end
-
-      def message
-        "Sorry you can't use bad language"
       end
     end
   end

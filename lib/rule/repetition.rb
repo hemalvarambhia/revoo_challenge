@@ -9,7 +9,7 @@ class Repetition
   end
 
   def word_count(review)
-    words = review.words
+    words = review.words.map(&:downcase)
     words.uniq.inject({}) do |word_count, word|
       word_count.merge(word => words.count { |w| w == word })
     end

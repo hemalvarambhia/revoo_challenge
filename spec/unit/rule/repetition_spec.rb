@@ -38,4 +38,8 @@ describe Repetition do
       expect(violation).to eq "Sorry you can't have repetition"
     end
   end
+
+  describe 'a review with same word repeated 3 times in different cases' do
+    it 'is a violation'
+  end
 end

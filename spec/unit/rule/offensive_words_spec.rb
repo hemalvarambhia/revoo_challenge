@@ -33,6 +33,14 @@ describe OffensiveWords do
   end
 
   describe 'a review with multiple offensive words' do
-    it 'is a violation'
+    let(:with_many_offensive_words) do
+      Review.new('id' => 3, 'text' => 'I Hate Politics and Humanities')
+    end
+    
+    it 'is a violation' do
+      violation = offensive_words.violation(with_many_offensive_words)
+      
+      expect(violation).to eq "Sorry you can't use bad language"
+    end
   end
 end

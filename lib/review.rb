@@ -38,7 +38,7 @@ class Review
   end
 
   def contains? word
-    text.include? word
+    text.downcase.include?(word.downcase)
   end
 
   def words

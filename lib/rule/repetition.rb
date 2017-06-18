@@ -5,7 +5,7 @@ class Repetition
   private
 
   def violated_in? review
-    word_count(review).any? { |_, count| count == 3 }
+    word_count(review).any? { |_, count| count >= 3 }
   end
 
   def word_count(review)

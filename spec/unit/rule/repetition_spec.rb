@@ -15,13 +15,25 @@ describe Repetition do
     end
   end
 
-  describe 'when a review has words repeated three times' do
-    let(:with_three_words_repeated) do
+  describe 'a review with a word repeated three times' do
+    let(:with_word_repeated_3_times) do
       Review.new('id' => 1, 'text' => 'This product is super super super')
     end
     
     it 'is a violation' do
-      violation = Repetition.new.violation(with_three_words_repeated)
+      violation = Repetition.new.violation(with_word_repeated_3_times)
+      
+      expect(violation).to eq "Sorry you can't have repetition"
+    end
+  end
+
+  describe 'a review with a word repeated more than three times' do
+    let(:with_word_repeated_more_than_3_times) do
+      Review.new('id' => 1, 'text' => 'This product is super super super super')
+    end
+    
+    it 'is a violation' do
+      violation = Repetition.new.violation(with_word_repeated_more_than_3_times)
       
       expect(violation).to eq "Sorry you can't have repetition"
     end

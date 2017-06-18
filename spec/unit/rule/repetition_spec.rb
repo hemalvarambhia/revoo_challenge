@@ -14,4 +14,16 @@ describe Repetition do
       expect(violation).to be_nil
     end
   end
+
+  describe 'when a review has words repeated three times' do
+    let(:with_three_words_repeated) do
+      Review.new('id' => 1, 'text' => 'This product is super super super')
+    end
+    
+    it 'is a violation' do
+      violation = Repetition.new.violation(with_three_words_repeated)
+      
+      expect(violation).to eq "Sorry you can't have repetition"
+    end
+  end
 end

@@ -21,7 +21,11 @@ describe Prices do
   end
 
   describe 'a review with more than one price quoted' do
-    it 'is a violation'
+    it 'is a violation' do
+      violation = Prices.new.violation(Review.new('text' => '15! It was only worth £10!'))
+
+      expect(violation).to eq "Sorry you can't mention the price"
+    end
   end
 
   describe 'a review with a price quoted in a different currency' do

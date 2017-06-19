@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 require 'spec_helper'
 require 'review'
 require 'rule/prices'
@@ -12,7 +13,11 @@ describe Prices do
   end
 
   describe 'a review with a price quoted' do
-    it 'is a violation'
+    it 'is a violation' do      
+      violation = Prices.new.violation(Review.new('text' => 'It cost £15 - too expensive!'))
+
+      expect(violation).to eq "Sorry you can't mention the price"
+    end
   end
 
   describe 'a review with more than one price quoted' do
